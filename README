@@ -19,8 +19,9 @@ requirements for building and running the kernel, and information about
 the problems which may result by upgrading your kernel.
 
 * Download gcc-linaro from: https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/
-* Unpack with: tar xvz gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz -C /opt/
+* Unpack with: tar xvf gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz -C /opt/
 * Reset config for DHCore before first compilation: ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make imx6ull_dhsom_defconfig
 * Update config if needed (optional): ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make menuconfig
 * Compile device tree:  ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make dtbs -j8
 * Compile kernel: ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make zImage -j8
+* More explanations: https://wiki.dh-electronics.com/index.php/COM_iMX6ULL_Linux
