@@ -564,7 +564,8 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
 	imx6ull-dhcom-pdk2.dtb \
 	imx6ull-dhcom-pdk2-spi2.dtb \
 	imx6ull-dhcom-picoitx02.dtb \
-	imx6ull-dhcor-example.dtb
+	imx6ull-dhcor-example.dtb \
+	imx6ull-dhcor-consolinno-grundmodul.dtb
 dtb-$(CONFIG_SOC_IMX7D) += \
 	imx7d-cl-som-imx7.dtb \
 	imx7d-colibri-emmc-eval-v3.dtb \
