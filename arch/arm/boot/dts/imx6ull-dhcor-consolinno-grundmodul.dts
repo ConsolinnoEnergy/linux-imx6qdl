@@ -25,34 +25,34 @@
 		/delete-property/ spi3;
 	};
 
-	clk_ext_audio_codec: clock-codec {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <24000000>;
-	};
+	// clk_ext_audio_codec: clock-codec {
+	// 	compatible = "fixed-clock";
+	// 	#clock-cells = <0>;
+	// 	clock-frequency = <24000000>;
+	// };
 
-	display_bl: display-bl {
-		compatible = "pwm-backlight";
-		pwms = <&pwm1 0 50000 PWM_POLARITY_INVERTED>;
-		/* Brightness value  0 1  2  3  4  5  6  7   8   9   10 */
-		brightness-levels = <0 16 22 30 40 55 75 102 138 188 255>;
-		default-brightness-level = <8>;
-		enable-gpios = <&gpio5 8 GPIO_ACTIVE_HIGH>; /* GPIO G */
-		power-supply = <&reg_ext_24v>;
-		status = "okay";
-	};
+	// display_bl: display-bl {
+	// 	compatible = "pwm-backlight";
+	// 	pwms = <&pwm1 0 50000 PWM_POLARITY_INVERTED>;
+	// 	/* Brightness value  0 1  2  3  4  5  6  7   8   9   10 */
+	// 	brightness-levels = <0 16 22 30 40 55 75 102 138 188 255>;
+	// 	default-brightness-level = <8>;
+	// 	enable-gpios = <&gpio5 8 GPIO_ACTIVE_HIGH>; /* GPIO G */
+	// 	power-supply = <&reg_ext_24v>;
+	// 	status = "okay";
+	// };
 
-	panel {
-		compatible = "edt,etm0700g0edh6"; /* Default PDK2 display */
-		ddc-i2c-bus = <&i2c2>;            /* Using EDID if provided */
-		backlight = <&display_bl>;
+	// panel {
+	// 	compatible = "edt,etm0700g0edh6"; /* Default PDK2 display */
+	// 	ddc-i2c-bus = <&i2c2>;            /* Using EDID if provided */
+	// 	backlight = <&display_bl>;
 
-		port {
-			panel_in: endpoint {
-				remote-endpoint = <&display_out>;
-			};
-		};
-	};
+	// 	port {
+	// 		panel_in: endpoint {
+	// 			remote-endpoint = <&display_out>;
+	// 		};
+	// 	};
+	// };
 
 	reg_ext_24v: regulator-ext-24v {
 		compatible = "regulator-fixed";
@@ -93,31 +93,31 @@
 		gpio = <&gpio1 5 GPIO_ACTIVE_LOW>;
 	};
 
-	sound {
-		compatible = "simple-audio-card";
-		simple-audio-card,name = "pdk2-sgtl5000";
-		simple-audio-card,format = "i2s";
-		simple-audio-card,bitclock-master = <&dailink_master>;
-		simple-audio-card,frame-master = <&dailink_master>;
-		simple-audio-card,widgets =
-			"Microphone", "Mic Jack",
-			"Line", "Line In Jack",
-			"Headphone", "Headphone Jack";
-		simple-audio-card,routing =
-			"MIC_IN", "Mic Jack",
-			"Mic Jack", "Mic Bias",
-			"LINE_IN", "Line In Jack",
-			"Headphone Jack", "HP_OUT";
+	// sound {
+	// 	compatible = "simple-audio-card";
+	// 	simple-audio-card,name = "pdk2-sgtl5000";
+	// 	simple-audio-card,format = "i2s";
+	// 	simple-audio-card,bitclock-master = <&dailink_master>;
+	// 	simple-audio-card,frame-master = <&dailink_master>;
+	// 	simple-audio-card,widgets =
+	// 		"Microphone", "Mic Jack",
+	// 		"Line", "Line In Jack",
+	// 		"Headphone", "Headphone Jack";
+	// 	simple-audio-card,routing =
+	// 		"MIC_IN", "Mic Jack",
+	// 		"Mic Jack", "Mic Bias",
+	// 		"LINE_IN", "Line In Jack",
+	// 		"Headphone Jack", "HP_OUT";
 
-		simple-audio-card,cpu {
-			sound-dai = <&sai2>;
-		};
+	// 	simple-audio-card,cpu {
+	// 		sound-dai = <&sai2>;
+	// 	};
 
-		dailink_master: simple-audio-card,codec {
-			sound-dai = <&sgtl5000>;
-			clocks = <&clk_ext_audio_codec>;
-		};
-	};
+	// 	dailink_master: simple-audio-card,codec {
+	// 		sound-dai = <&sgtl5000>;
+	// 		clocks = <&clk_ext_audio_codec>;
+	// 	};
+	// };
 };
 
 &can1 {
@@ -279,28 +279,34 @@
 };
 
 &i2c1 { /* DHCOM I2C2 */
-	rtc_i2c: rtc@32 {
-		compatible = "microcrystal,rv8803";
-		reg = <0x32>;
+	// TODO, complete rtc setup
+	rtc_i2c: rtc@52 {
+		compatible = "microcrystal,rv3028";
+		reg = <0x52>;
 	};
 
-	mac-eeprom@50 { /* Microchip 24AA025E48T-I/OT containing MAC for enet1 */
+	// TODO: original eeprom was 0x50, so in that case we have to customize uboot src for mac loading of enet1
+	// https://github.com/dh-electronics/u-boot-imx6qdl
+	// https://github.com/dh-electronics/u-boot-imx6qdl/blob/dev/2018.05_dhcom/board/dhelectronics/dh_imx6ull/dh_imx6ull.c#L68
+	// replace 0x50 -> 0x51
+
+	mac-eeprom@51 { /* Microchip 24AA025E48T-I/OT containing MAC for enet1 */
 		compatible = "atmel,24c02";
-		reg = <0x50>;
+		reg = <0x51>;
 		pagesize = <16>;
 	};
 
-	adc@51 { /* TI ADC101C027 */
-		compatible = "ti,adc101c";
-		reg = <0x51>;
-		vref-supply = <&reg_ext_3v3_ref>;
-	};
+	// adc@51 { /* TI ADC101C027 */
+	// 	compatible = "ti,adc101c";
+	// 	reg = <0x51>;
+	// 	vref-supply = <&reg_ext_3v3_ref>;
+	// };
 
-	adc@52 { /* TI ADC101C027 */
-		compatible = "ti,adc101c";
-		reg = <0x52>;
-		vref-supply = <&reg_ext_3v3_ref>;
-	};
+	// adc@52 { /* TI ADC101C027 */
+	// 	compatible = "ti,adc101c";
+	// 	reg = <0x52>;
+	// 	vref-supply = <&reg_ext_3v3_ref>;
+	// };
 
 	mac-eeprom@53 { /* Microchip 24AA025E48T-I/OT containing MAC for enet2 */
 		compatible = "atmel,24c02";
@@ -311,86 +317,86 @@
 	/* pmic@58 used on DHCOR */
 };
 
-&i2c2 { /* DHCOM I2C1 */
-	pinctrl-names = "default", "gpio";
-	pinctrl-0 = <&pinctrl_i2c2>;
-	pinctrl-1 = <&pinctrl_i2c2_gpio>;
-	scl-gpios = <&gpio1 30 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-	sda-gpios = <&gpio1 31 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-	clock_frequency = <100000>;
-	status = "okay";
+// &i2c2 { /* DHCOM I2C1 */
+// 	pinctrl-names = "default", "gpio";
+// 	pinctrl-0 = <&pinctrl_i2c2>;
+// 	pinctrl-1 = <&pinctrl_i2c2_gpio>;
+// 	scl-gpios = <&gpio1 30 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+// 	sda-gpios = <&gpio1 31 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+// 	clock_frequency = <100000>;
+// 	status = "okay";
 
-	sgtl5000: codec@a {
-		compatible = "fsl,sgtl5000";
-		reg = <0x0a>;
-		#sound-dai-cells = <0>;
-		clocks = <&clk_ext_audio_codec>;
-		VDDA-supply = <&reg_ext_3v3>;
-		VDDIO-supply = <&reg_ext_3v3>;
-	};
+// 	sgtl5000: codec@a {
+// 		compatible = "fsl,sgtl5000";
+// 		reg = <0x0a>;
+// 		#sound-dai-cells = <0>;
+// 		clocks = <&clk_ext_audio_codec>;
+// 		VDDA-supply = <&reg_ext_3v3>;
+// 		VDDIO-supply = <&reg_ext_3v3>;
+// 	};
 
-	polytouch@38 { /* Default PDK2 display touch: edt-ft5x06 */
-		compatible = "edt,edt-ft5x06";
-		reg = <0x38>;
-		interrupt-parent = <&gpio5>;
-		interrupts = <4 IRQ_TYPE_EDGE_FALLING>; /* GPIO E */
-		linux,wakeup;
-	};
-};
+// 	polytouch@38 { /* Default PDK2 display touch: edt-ft5x06 */
+// 		compatible = "edt,edt-ft5x06";
+// 		reg = <0x38>;
+// 		interrupt-parent = <&gpio5>;
+// 		interrupts = <4 IRQ_TYPE_EDGE_FALLING>; /* GPIO E */
+// 		linux,wakeup;
+// 	};
+// };
 
-&lcdif {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_lcdif>;
-	status = "okay";
+// &lcdif {
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&pinctrl_lcdif>;
+// 	status = "okay";
 
-	port {
-		display_out: endpoint {
-			remote-endpoint = <&panel_in>;
-		};
-	};
-};
+// 	port {
+// 		display_out: endpoint {
+// 			remote-endpoint = <&panel_in>;
+// 		};
+// 	};
+// };
 
-&pwm1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm1>;
-	#pwm-cells = <3>;
-	status = "okay";
-};
+// &pwm1 {
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&pinctrl_pwm1>;
+// 	#pwm-cells = <3>;
+// 	status = "okay";
+// };
 
-&sai2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_sai2>;
-	status = "okay";
-};
+// &sai2 {
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&pinctrl_sai2>;
+// 	status = "okay";
+// };
 
-&tsc {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_tsc>;
-	xnur-gpio = <&gpio1 3 GPIO_ACTIVE_LOW>;
-	measure-delay-time = <0xffff>;
-	pre-charge-time = <0xfff>;
-	touchscreen-average-samples = <32>;
-	status = "okay";
-};
+// &tsc {
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&pinctrl_tsc>;
+// 	xnur-gpio = <&gpio1 3 GPIO_ACTIVE_LOW>;
+// 	measure-delay-time = <0xffff>;
+// 	pre-charge-time = <0xfff>;
+// 	touchscreen-average-samples = <32>;
+// 	status = "okay";
+// };
 
 &uart3 { /* Consolinno CLS RS485 pin header */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
 	uart-has-rtscts;
 	linux,rs485-enabled-at-boot-time;
-	status = "active";
+	status = "okay";
 };
 
 &uart4 { /* Consolinno CLS wmbus */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart4>;
-	status = "active";
+	status = "okay";
 };
 
 &uart5 { /* Consolinno CLS H-BUS */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
-	status = "active";
+	status = "okay";
 };
 
 &uart6 { /* Consolinno CLS RS485-2 */
@@ -398,13 +404,13 @@
 	pinctrl-0 = <&pinctrl_uart6>;
 	uart-has-rtscts;
 	linux,rs485-enabled-at-boot-time;
-	status = "active";
+	status = "okay";
 };
 
 &uart7 { /* Consolinno CLS RS232 */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart7>;
-	status = "active";
+	status = "okay";
 };
 
 &usbotg1 {
@@ -454,10 +460,10 @@
 	pinctrl_hog_pdk2: hog-pdk2-grp {
 		fsl,pins = <
 			MX6UL_PAD_UART1_CTS_B__GPIO1_IO18	0x400120b0 /* GPIO I -> BT_REG_ON (BT on LGA) */
-			MX6UL_PAD_CSI_HSYNC__GPIO4_IO20		0x400120b0 /* GPIO J */
-			MX6UL_PAD_CSI_PIXCLK__GPIO4_IO18	0x400120b0 /* GPIO K */
-			MX6UL_PAD_CSI_MCLK__GPIO4_IO17		0x400120b0 /* GPIO L */
-			MX6UL_PAD_CSI_VSYNC__GPIO4_IO19		0x400120b0 /* GPIO M */
+			/*MX6UL_PAD_CSI_HSYNC__GPIO4_IO20		0x400120b0*/ /* GPIO J, uart 6 use! */
+			/*MX6UL_PAD_CSI_PIXCLK__GPIO4_IO18	0x400120b0*/ /* GPIO K, disable while used for uart6 */
+			/*MX6UL_PAD_CSI_MCLK__GPIO4_IO17		0x400120b0*/ /* GPIO L, disable while used for uart6 */
+			/*MX6UL_PAD_CSI_VSYNC__GPIO4_IO19		0x400120b0*/ /* GPIO M, disable while used for uart6 */
 #ifndef CFG_BOOTFLASH
 			MX6UL_PAD_CSI_DATA07__GPIO4_IO28	0x400120b0 /* GPIO N */
 			MX6UL_PAD_CSI_DATA06__GPIO4_IO27	0x400120b0 /* GPIO O */
@@ -540,19 +546,19 @@
 		>;
 	};
 
-	pinctrl_i2c2: i2c2-grp {
-		fsl,pins = <
-			MX6UL_PAD_UART5_TX_DATA__I2C2_SCL	0x4001b8b0
-			MX6UL_PAD_UART5_RX_DATA__I2C2_SDA	0x4001b8b0
-		>;
-	};
+	// pinctrl_i2c2: i2c2-grp {
+	// 	fsl,pins = <
+	// 		MX6UL_PAD_UART5_TX_DATA__I2C2_SCL	0x4001b8b0
+	// 		MX6UL_PAD_UART5_RX_DATA__I2C2_SDA	0x4001b8b0
+	// 	>;
+	// };
 
-	pinctrl_i2c2_gpio: i2c2-gpio-grp {
-		fsl,pins = <
-			MX6UL_PAD_UART5_TX_DATA__GPIO1_IO30	0x4001b8b0
-			MX6UL_PAD_UART5_RX_DATA__GPIO1_IO31	0x4001b8b0
-		>;
-	};
+	// pinctrl_i2c2_gpio: i2c2-gpio-grp {
+	// 	fsl,pins = <
+	// 		MX6UL_PAD_UART5_TX_DATA__GPIO1_IO30	0x4001b8b0
+	// 		MX6UL_PAD_UART5_RX_DATA__GPIO1_IO31	0x4001b8b0
+	// 	>;
+	// };
 
 	pinctrl_lcdif: lcdif-grp {
 		fsl,pins = <
