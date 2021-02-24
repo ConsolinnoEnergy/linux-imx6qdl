@@ -134,11 +134,14 @@
 
 #ifndef CFG_BOOTFLASH
 &ecspi1 { /* DHCOM SPI1 */
-	cs-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>;
+	cs-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>, <&gpio3 10 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi1>;
 	power-supply = <&reg_spi_bus>;
 	status = "okay";
+
+	#address-cells = <1>;
+	#size-cells = <0>;
 
 	enc28j60: ethernet@0 {
 		pinctrl-names = "default";
@@ -151,18 +154,19 @@
 		reg = <0>; //cs0
 	};
 
-	// tpm0@0 {
-	// 	pinctrl-names = "default";
-	// 	pinctrl-0 = <&pinctrl_ecspi1_tpm0>;
-	// 	#address-cells = <1>;
-	// 	#size-cells = <1>;
-	// 	compatible = "microchip,enc28j60";
-	// 	spi-max-frequency = <20000000>;
-	// 	intr-gpio = <&gpio1 2 0>;
-	// 	//interrupt-parent = <&gpio1>;
-	// 	//interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
-	// 	reg = <1>; //cs1
-	// };
+	slb9670: slb9670@0 {
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ecspi1_tpm>;
+		compatible = "infineon,slb9670";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <32000000>;
+		//intr-gpio = <&gpio1 2 0>;
+		interrupt-parent = <&gpio1>;
+		interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
+		reg = <1>; //cs1
+		//resets = <&tpm_reset>;
+	};
 };
 #endif
 
@@ -290,9 +294,9 @@
 	// https://github.com/dh-electronics/u-boot-imx6qdl/blob/dev/2018.05_dhcom/board/dhelectronics/dh_imx6ull/dh_imx6ull.c#L68
 	// replace 0x50 -> 0x51
 
-	mac-eeprom@51 { /* Microchip 24AA025E48T-I/OT containing MAC for enet1 */
+	mac-eeprom@50 { /* Microchip 24AA025E48T-I/OT containing MAC for enet1 */
 		compatible = "atmel,24c02";
-		reg = <0x51>;
+		reg = <0x50>;
 		pagesize = <16>;
 	};
 
@@ -486,6 +490,7 @@
 			MX6UL_PAD_LCD_DATA22__ECSPI1_MOSI	0x100b1
 			MX6UL_PAD_LCD_DATA20__ECSPI1_SCLK	0x100b1
 			MX6UL_PAD_LCD_DATA21__GPIO3_IO26	0x1b0b0 /* SS0 */
+			MX6UL_PAD_LCD_DATA05__GPIO3_IO10  0x1b0b0 /* SS1 */	
 		>;
 	};
 
@@ -495,11 +500,17 @@
 		>;
 	};
 
-	// pinctrl_ecspi1_tpm0: ecspi1-tpm0-grp {
-	// 	fsl,pins = <
-	// 		MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0 /* SMSC phy INT */
-	// 	>;
-	// };
+	pinctrl_ecspi1_tpm: ecspi1-tpm-grp {
+		fsl,pins = <
+			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0 /* irq */
+		>;
+	};
+
+	tpm_reset: tpm_reset {
+		fsl,pins = <
+			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0 /* reset */
+		>;
+	};
 
 	pinctrl_enet1: enet1-grp {
 		fsl,pins = <
@@ -571,7 +582,7 @@
 			MX6UL_PAD_LCD_DATA02__LCDIF_DATA02	0x79
 			MX6UL_PAD_LCD_DATA03__LCDIF_DATA03	0x79
 			MX6UL_PAD_LCD_DATA04__LCDIF_DATA04	0x79
-			MX6UL_PAD_LCD_DATA05__LCDIF_DATA05	0x79
+			/*MX6UL_PAD_LCD_DATA05__LCDIF_DATA05*/	0x79
 			MX6UL_PAD_LCD_DATA06__LCDIF_DATA06	0x79
 			MX6UL_PAD_LCD_DATA07__LCDIF_DATA07	0x79
 			MX6UL_PAD_LCD_DATA08__LCDIF_DATA08	0x79
@@ -687,11 +698,11 @@
 
 	pinctrl_snvs_hog_pdk2: snvs-hog-pdk2-grp {
 		fsl,pins = <
-			MX6ULL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x400120b0 /* GPIO A */
-			MX6ULL_PAD_SNVS_TAMPER1__GPIO5_IO01	0x400120b0 /* GPIO B */
+			MX6ULL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x400120b0 /* GPIO A, Potential Free Input IN 2 */
+			MX6ULL_PAD_SNVS_TAMPER1__GPIO5_IO01	0x400120b0 /* GPIO B, Potential Free Input IN 1 */
 			MX6ULL_PAD_SNVS_TAMPER2__GPIO5_IO02	0x400120b0 /* GPIO C */
-			MX6ULL_PAD_SNVS_TAMPER3__GPIO5_IO03	0x400120b0 /* GPIO D */
-			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x120b0    /* GPIO E -> Polytouch INT */
+			MX6ULL_PAD_SNVS_TAMPER3__GPIO5_IO03	0x400120b0 /* GPIO D, Potential Free Input IN 3 */
+			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x120b0    /* GPIO E, Potential Free Input IN 4 */
 			MX6ULL_PAD_SNVS_TAMPER7__GPIO5_IO07	0x400120b0 /* GPIO F */
 			MX6ULL_PAD_SNVS_TAMPER8__GPIO5_IO08	0x120b0    /* GPIO G -> Backlight enable */
 			MX6ULL_PAD_SNVS_TAMPER9__GPIO5_IO09	0x1b0b0    /* GPIO H -> WL_REG_ON (WiFi on LGA) */
