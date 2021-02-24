@@ -318,6 +318,14 @@
 		pagesize = <16>;
 	};
 
+
+	pca9555: pca9555@21 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x21>;
+	};
+
 	/* pmic@58 used on DHCOR */
 };
 
