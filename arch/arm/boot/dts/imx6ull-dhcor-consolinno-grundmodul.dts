@@ -147,7 +147,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ecspi1_eth>;
 		compatible = "microchip,enc28j60";
-		spi-max-frequency = <12000000>;
+		spi-max-frequency = <1000000>;
 		// intr-gpio = <&gpio1 2 0>;
 		interrupt-parent = <&gpio1>;
 		interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
@@ -489,6 +489,11 @@
 			/* There isn't a pin defined                          GPIO V */
 			/* There isn't a pin defined                          GPIO W */
 			MX6UL_PAD_JTAG_TMS__GPIO1_IO11		0x400120b0 /* INT_HIGHEST_PRIORITY */
+
+			MX6UL_PAD_UART2_RTS_B__GPIO1_IO23 	0x400120b0 /* reset enc28j60*/
+			MX6UL_PAD_UART2_CTS_B__GPIO1_IO22	0x400120b0 /* status led3 */
+
+
 		>;
 	};
 
@@ -504,8 +509,9 @@
 
 	pinctrl_ecspi1_eth: ecspi1-eth-grp {
 		fsl,pins = <
-			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0x120b0 /* SMSC phy INT */
+			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0 /* SMSC phy INT */
 		>;
+
 	};
 
 	pinctrl_ecspi1_tpm: ecspi1-tpm-grp {
@@ -560,8 +566,8 @@
 
 	pinctrl_flexcan2: flexcan2-grp{
 		fsl,pins = <
-			MX6UL_PAD_UART2_RTS_B__FLEXCAN2_RX	0x1b020
-			MX6UL_PAD_UART2_CTS_B__FLEXCAN2_TX	0x1b020
+			/*MX6UL_PAD_UART2_RTS_B__FLEXCAN2_RX	0x1b020*/
+			/*MX6UL_PAD_UART2_CTS_B__FLEXCAN2_TX	0x1b020*/
 		>;
 	};
 
