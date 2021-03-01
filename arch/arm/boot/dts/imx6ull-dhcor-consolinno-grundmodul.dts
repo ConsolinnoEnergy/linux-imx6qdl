@@ -318,13 +318,65 @@
 		pagesize = <16>;
 	};
 
+	mac-eeprom@50 { /* eeprom for  */
+		compatible = "eeprom,24c32";
+		reg = <0x50>;
+		pagesize = <32>;
+	};
 
-	pca9555: pca9555@21 {
+	mac-eeprom@54 { /* eeprom for  */
+		compatible = "eeprom,24c32";
+		reg = <0x54>;
+		pagesize = <32>;
+	};
+
+
+
+	// GPIO Expander for internal relais
+	gpiointrel: gpio-intrel@21 {
 		compatible = "nxp,pca9555";
 		gpio-controller;
 		#gpio-cells = <2>;
 		reg = <0x21>;
 	};
+
+	// relais boards, 0x20, 0x22, 0x24, 0x26
+	gpiorelmod1: gpio-relmod1@20 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x20>;
+	};
+	gpiorelmod2: gpio-relmod2@22 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x22>;
+	};
+	gpiorelmod3: gpio-relmod3@24 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x24>;
+	};
+	gpiorelmod4: gpio-relmod4@26 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x26>;
+	};
+
+	pwm0: pca-mod0@43 {
+		compatible = "nxp,pca9685-pwm";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x43>;
+		invert;
+		open-drain;
+	};
+
+	// temp module
+
 
 	/* pmic@58 used on DHCOR */
 };
