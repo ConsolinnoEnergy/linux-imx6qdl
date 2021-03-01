@@ -19,8 +19,8 @@
 		rtc0 = &rtc_i2c;
 		rtc1 = &snvs_rtc;
 		mmc2 = &usdhc2; /* eMMC (on module) should be mmc2 */
-		spi0 = &ecspi1; /* DHCOM SPI1 */
-		spi1 = &ecspi4; /* DHCOM SPI2 */
+		spi0 = &ecspi2;
+		spi1 = &ecspi1;
 		/delete-property/ spi2; /* Avoid double definitions */
 		/delete-property/ spi3;
 	};
@@ -126,11 +126,11 @@
 	status = "okay";
 };
 
-&can2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_flexcan2>;
-	status = "disabled";
-};
+// &can2 {
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&pinctrl_flexcan2>;
+// 	status = "disabled";
+// };
 
 #ifndef CFG_BOOTFLASH
 &ecspi1 { /* DHCOM SPI1 */
@@ -169,6 +169,99 @@
 	};
 };
 #endif
+
+&ecspi2 {
+	//compatible = "spi-gpio";
+	cs-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>, <&gpio3 2 GPIO_ACTIVE_LOW>, <&gpio3 3 GPIO_ACTIVE_LOW>, <&gpio3 4 GPIO_ACTIVE_LOW>, 
+		<&gpiointrel 13 GPIO_ACTIVE_LOW>, <&gpiointrel 12 GPIO_ACTIVE_LOW>, <&gpiointrel 11 GPIO_ACTIVE_LOW>, <&gpiointrel 10 GPIO_ACTIVE_LOW> ;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_ecspi2>;
+	power-supply = <&reg_spi_bus>;
+	status = "okay";
+
+	#address-cells = <1>;
+	#size-cells = <0>;	
+
+	spidev@0{
+		compatible = "spidev";
+		reg = <0>;      /* CE0 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+    };
+	spidev@1{
+		compatible = "spidev";
+		reg = <1>;      /* CE0 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+    };
+	spidev@2{
+		compatible = "spidev";
+		reg = <2>;      /* CE0 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+    };
+	spidev@3{
+		compatible = "spidev";
+		reg = <3>;      /* CE0 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+    };
+	spidev@4{
+		compatible = "spidev";
+		reg = <4>;      /* CE0 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+    };
+	spidev@5{
+		compatible = "spidev";
+		reg = <5>;      /* CE0 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+    };
+	spidev@6{
+		compatible = "spidev";
+		reg = <6>;      /* CE0 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+    };
+	spidev@7{
+		compatible = "spidev";
+		reg = <7>;      /* CE0 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+    };
+
+	// Loaded manualy from leaflet basic sw
+
+	// tmp0: mcp3208-tmp0@0 {
+	// 	compatible = "microchip,mcp3208";
+	// 	reg = <0>;
+	// 	spi-max-frequency = <1000000>;
+	// };
+	// tmp1: mcp3208-tmp1@1 {
+	// 	compatible = "microchip,mcp3208";
+	// 	reg = <1>;
+	// 	spi-max-frequency = <1000000>;
+	// };
+	// tmp2: mcp3208-tmp2@2 {
+	// 	compatible = "microchip,mcp3208";
+	// 	reg = <2>;
+	// 	spi-max-frequency = <1000000>;
+	// };
+	// tmp3: mcp3208-tmp3@3 {
+	// 	compatible = "microchip,mcp3208";
+	// 	reg = <3>;
+	// 	spi-max-frequency = <1000000>;
+	// };
+};
 
 &fec1 {
 	pinctrl-names = "default";
@@ -534,10 +627,10 @@
 			MX6UL_PAD_CSI_DATA05__GPIO4_IO26	0x400120b0 /* GPIO P */
 			MX6UL_PAD_CSI_DATA04__GPIO4_IO25	0x400120b0 /* GPIO Q */
 #endif
-			MX6UL_PAD_CSI_DATA03__GPIO4_IO24	0x400120b0 /* GPIO R (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
-			MX6UL_PAD_CSI_DATA02__GPIO4_IO23	0x400120b0 /* GPIO S (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
-			MX6UL_PAD_CSI_DATA01__GPIO4_IO22	0x400120b0 /* GPIO T (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
-			MX6UL_PAD_CSI_DATA00__GPIO4_IO21	0x400120b0 /* GPIO U (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
+			/*MX6UL_PAD_CSI_DATA03__GPIO4_IO24	0x400120b0*/ /* GPIO R (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
+			/*MX6UL_PAD_CSI_DATA02__GPIO4_IO23	0x400120b0*/ /* GPIO S (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
+			/*MX6UL_PAD_CSI_DATA01__GPIO4_IO22	0x400120b0*/ /* GPIO T (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
+			/*MX6UL_PAD_CSI_DATA00__GPIO4_IO21	0x400120b0*/ /* GPIO U (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
 			/* There isn't a pin defined                          GPIO V */
 			/* There isn't a pin defined                          GPIO W */
 			MX6UL_PAD_JTAG_TMS__GPIO1_IO11		0x400120b0 /* INT_HIGHEST_PRIORITY */
@@ -554,8 +647,20 @@
 			MX6UL_PAD_LCD_DATA23__ECSPI1_MISO	0x100b1
 			MX6UL_PAD_LCD_DATA22__ECSPI1_MOSI	0x100b1
 			MX6UL_PAD_LCD_DATA20__ECSPI1_SCLK	0x100b1
-			MX6UL_PAD_LCD_DATA21__GPIO3_IO26	0x1b0b0 /* SS0 */
-			MX6UL_PAD_LCD_DATA05__GPIO3_IO10  0x1b0b0 /* SS1 */	
+			MX6UL_PAD_LCD_DATA21__GPIO3_IO26	0x1b0b0 	/* SS0 */
+			MX6UL_PAD_LCD_DATA05__GPIO3_IO10  	0x1b0b0 	/* SS1 */	
+		>;
+	};
+
+	pinctrl_ecspi2: ecspi2-grp {
+		fsl,pins = <
+			MX6UL_PAD_CSI_DATA03__ECSPI2_MISO	0x100b1
+			MX6UL_PAD_CSI_DATA02__ECSPI2_MOSI	0x100b1
+			MX6UL_PAD_CSI_DATA00__ECSPI2_SCLK	0x100b1
+			MX6UL_PAD_CSI_DATA01__GPIO4_IO22 	0x1b0b0		/* SS0 */
+			MX6UL_PAD_LCD_HSYNC__GPIO3_IO02  	0x1b0b0 	/* SS1 */
+			MX6UL_PAD_LCD_VSYNC__GPIO3_IO03  	0x1b0b0 	/* SS2 */	
+			MX6UL_PAD_LCD_RESET__GPIO3_IO04  	0x1b0b0 	/* SS3 */
 		>;
 	};
 
@@ -616,12 +721,12 @@
 		>;
 	};
 
-	pinctrl_flexcan2: flexcan2-grp{
-		fsl,pins = <
-			/*MX6UL_PAD_UART2_RTS_B__FLEXCAN2_RX	0x1b020*/
-			/*MX6UL_PAD_UART2_CTS_B__FLEXCAN2_TX	0x1b020*/
-		>;
-	};
+	// pinctrl_flexcan2: flexcan2-grp{
+	// 	fsl,pins = <
+	// 		/*MX6UL_PAD_UART2_RTS_B__FLEXCAN2_RX	0x1b020*/
+	// 		/*MX6UL_PAD_UART2_CTS_B__FLEXCAN2_TX	0x1b020*/
+	// 	>;
+	// };
 
 	// pinctrl_i2c2: i2c2-grp {
 	// 	fsl,pins = <
@@ -637,32 +742,32 @@
 	// 	>;
 	// };
 
-	pinctrl_lcdif: lcdif-grp {
-		fsl,pins = <
-			MX6UL_PAD_LCD_CLK__LCDIF_CLK		0x79
-			MX6UL_PAD_LCD_ENABLE__LCDIF_ENABLE	0x79
-			MX6UL_PAD_LCD_HSYNC__LCDIF_HSYNC	0x79
-			MX6UL_PAD_LCD_VSYNC__LCDIF_VSYNC	0x79
-			MX6UL_PAD_LCD_DATA00__LCDIF_DATA00	0x79
-			MX6UL_PAD_LCD_DATA01__LCDIF_DATA01	0x79
-			MX6UL_PAD_LCD_DATA02__LCDIF_DATA02	0x79
-			MX6UL_PAD_LCD_DATA03__LCDIF_DATA03	0x79
-			MX6UL_PAD_LCD_DATA04__LCDIF_DATA04	0x79
-			/*MX6UL_PAD_LCD_DATA05__LCDIF_DATA05*/	0x79
-			MX6UL_PAD_LCD_DATA06__LCDIF_DATA06	0x79
-			MX6UL_PAD_LCD_DATA07__LCDIF_DATA07	0x79
-			MX6UL_PAD_LCD_DATA08__LCDIF_DATA08	0x79
-			MX6UL_PAD_LCD_DATA09__LCDIF_DATA09	0x79
-			MX6UL_PAD_LCD_DATA10__LCDIF_DATA10	0x79
-			MX6UL_PAD_LCD_DATA11__LCDIF_DATA11	0x79
-			MX6UL_PAD_LCD_DATA12__LCDIF_DATA12	0x79
-			MX6UL_PAD_LCD_DATA13__LCDIF_DATA13	0x79
-			MX6UL_PAD_LCD_DATA14__LCDIF_DATA14	0x79
-			MX6UL_PAD_LCD_DATA15__LCDIF_DATA15	0x79
-			MX6UL_PAD_LCD_DATA16__LCDIF_DATA16	0x79
-			MX6UL_PAD_LCD_DATA17__LCDIF_DATA17	0x79
-		>;
-	};
+	// pinctrl_lcdif: lcdif-grp {
+	// 	fsl,pins = <
+	// 		MX6UL_PAD_LCD_CLK__LCDIF_CLK		0x79
+	// 		MX6UL_PAD_LCD_ENABLE__LCDIF_ENABLE	0x79
+	// 		/*MX6UL_PAD_LCD_HSYNC__LCDIF_HSYNC	0x79*/
+	// 		/*MX6UL_PAD_LCD_VSYNC__LCDIF_VSYNC	0x79*/
+	// 		MX6UL_PAD_LCD_DATA00__LCDIF_DATA00	0x79
+	// 		MX6UL_PAD_LCD_DATA01__LCDIF_DATA01	0x79
+	// 		MX6UL_PAD_LCD_DATA02__LCDIF_DATA02	0x79
+	// 		MX6UL_PAD_LCD_DATA03__LCDIF_DATA03	0x79
+	// 		MX6UL_PAD_LCD_DATA04__LCDIF_DATA04	0x79
+	// 		/*MX6UL_PAD_LCD_DATA05__LCDIF_DATA05	0x79*/
+	// 		MX6UL_PAD_LCD_DATA06__LCDIF_DATA06	0x79
+	// 		MX6UL_PAD_LCD_DATA07__LCDIF_DATA07	0x79
+	// 		MX6UL_PAD_LCD_DATA08__LCDIF_DATA08	0x79
+	// 		MX6UL_PAD_LCD_DATA09__LCDIF_DATA09	0x79
+	// 		MX6UL_PAD_LCD_DATA10__LCDIF_DATA10	0x79
+	// 		MX6UL_PAD_LCD_DATA11__LCDIF_DATA11	0x79
+	// 		MX6UL_PAD_LCD_DATA12__LCDIF_DATA12	0x79
+	// 		MX6UL_PAD_LCD_DATA13__LCDIF_DATA13	0x79
+	// 		MX6UL_PAD_LCD_DATA14__LCDIF_DATA14	0x79
+	// 		MX6UL_PAD_LCD_DATA15__LCDIF_DATA15	0x79
+	// 		MX6UL_PAD_LCD_DATA16__LCDIF_DATA16	0x79
+	// 		MX6UL_PAD_LCD_DATA17__LCDIF_DATA17	0x79
+	// 	>;
+	// };
 
 	pinctrl_pwm1: pwm1-grp {
 		fsl,pins = <

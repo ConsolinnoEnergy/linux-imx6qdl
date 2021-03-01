@@ -438,6 +438,11 @@ static int mcp320x_probe(struct spi_device *spi)
 		 */
 		mcp320x_adc_conversion(adc, 0, 1, device_index, &ret);
 		mcp320x_adc_conversion(adc, 0, 1, device_index, &ret);
+	case mcp3208:
+		//TODO: check mcp3208 connection for real
+		// eg. mcp320x_adc_conversion(adc, 0, 1, device_index, &ret);
+		// eg return -1 on chip probing error
+		nop();
 	}
 
 	adc->reg = devm_regulator_get(&spi->dev, "vref");
