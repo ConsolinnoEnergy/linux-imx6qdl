@@ -176,6 +176,13 @@ static const struct attribute_group *nvmem_rw_dev_groups[] = {
 	NULL,
 };
 
+static const char * const nvmem_type_str[] = {
+	[NVMEM_TYPE_UNKNOWN] = "Unknown",
+	[NVMEM_TYPE_EEPROM] = "EEPROM",
+	[NVMEM_TYPE_OTP] = "OTP",
+	[NVMEM_TYPE_BATTERY_BACKED] = "Battery backed",
+};
+
 /* read only permission */
 static struct bin_attribute bin_attr_ro_nvmem = {
 	.attr	= {

@@ -22,6 +22,13 @@ typedef int (*nvmem_reg_read_t)(void *priv, unsigned int offset,
 typedef int (*nvmem_reg_write_t)(void *priv, unsigned int offset,
 				 void *val, size_t bytes);
 
+enum nvmem_type {
+	NVMEM_TYPE_UNKNOWN = 0,
+	NVMEM_TYPE_EEPROM,
+	NVMEM_TYPE_OTP,
+	NVMEM_TYPE_BATTERY_BACKED,
+};
+
 /**
  * struct nvmem_config - NVMEM device configuration
  *
@@ -56,6 +63,7 @@ struct nvmem_config {
 	int			ncells;
 	bool			read_only;
 	bool			root_only;
+	enum nvmem_type		type;
 	nvmem_reg_read_t	reg_read;
 	nvmem_reg_write_t	reg_write;
 	int	size;
