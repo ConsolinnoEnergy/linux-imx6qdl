@@ -143,15 +143,27 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 
-	enc28j60: ethernet@0 {
+	// enc28j60: ethernet@0 {
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&pinctrl_ecspi1_eth>;
+	// 	compatible = "microchip,enc28j60";
+	// 	spi-max-frequency = <1000000>;
+	// 	// intr-gpio = <&gpio1 2 0>;
+	// 	interrupt-parent = <&gpio1>;
+	// 	interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
+	// 	reg = <0>; //cs0
+	// };
+
+	dm9051: dm9051@0 {
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ecspi1_eth>;
-		compatible = "microchip,enc28j60";
-		spi-max-frequency = <1000000>;
+		compatible = "davicom,dm9051";
+		spi-max-frequency = <12000000>;
 		// intr-gpio = <&gpio1 2 0>;
 		interrupt-parent = <&gpio1>;
-		interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
+		interrupts = <2 IRQ_TYPE_EDGE_BOTH>;
 		reg = <0>; //cs0
+		status = "okay";
 	};
 
 	slb9670: slb9670@0 {
