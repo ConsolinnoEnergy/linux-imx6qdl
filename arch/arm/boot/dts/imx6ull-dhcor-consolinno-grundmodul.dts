@@ -447,25 +447,25 @@
 
 	// relais boards, 0x20, 0x22, 0x24, 0x26
 	gpiorelmod1: gpio-relmod1@20 {
-		compatible = "nxp,pca9555";
+		compatible = "microchip,mcp23008";
 		gpio-controller;
 		#gpio-cells = <2>;
 		reg = <0x20>;
 	};
 	gpiorelmod2: gpio-relmod2@22 {
-		compatible = "nxp,pca9555";
+		compatible = "microchip,mcp23008";
 		gpio-controller;
 		#gpio-cells = <2>;
 		reg = <0x22>;
 	};
 	gpiorelmod3: gpio-relmod3@24 {
-		compatible = "nxp,pca9555";
+		compatible = "microchip,mcp23008";
 		gpio-controller;
 		#gpio-cells = <2>;
 		reg = <0x24>;
 	};
 	gpiorelmod4: gpio-relmod4@26 {
-		compatible = "nxp,pca9555";
+		compatible = "microchip,mcp23008";
 		gpio-controller;
 		#gpio-cells = <2>;
 		reg = <0x26>;
