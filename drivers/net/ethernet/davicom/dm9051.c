@@ -217,6 +217,8 @@ static struct spi_driver dm9051_driver = {
 	#endif
 };
 
+module_spi_driver(dm9051_driver);
+
 // 1----------------------------------------------------------------------------------------------------------
 
 #if DM_DM_CONF_RARE_PROJECTS_DTS_USAGE
@@ -373,8 +375,8 @@ static void dm9051_cleanup(void)
     printk("[dm951_e_rmmod].e ------- 00.e -------\n");
 }
 
-module_init(dm9051_init);
-module_exit(dm9051_cleanup);
+// module_init(dm9051_init);
+// module_exit(dm9051_cleanup);
 
 MODULE_AUTHOR("Joseph CHANG <joseph_chang@davicom.com.tw>");
 MODULE_DESCRIPTION("Davicom DM9051 network driver");
