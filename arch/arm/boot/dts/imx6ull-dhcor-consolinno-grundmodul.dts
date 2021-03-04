@@ -140,9 +140,6 @@
 	power-supply = <&reg_spi_bus>;
 	status = "okay";
 
-	#address-cells = <1>;
-	#size-cells = <0>;
-
 	// enc28j60: ethernet@0 {
 	// 	pinctrl-names = "default";
 	// 	pinctrl-0 = <&pinctrl_ecspi1_eth>;
@@ -170,12 +167,10 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ecspi1_tpm>;
 		compatible = "infineon,slb9670";
-		#address-cells = <1>;
-		#size-cells = <0>;
-		spi-max-frequency = <32000000>;
+		spi-max-frequency = <3200000>;
 		//intr-gpio = <&gpio1 2 0>;
-		interrupt-parent = <&gpio1>;
-		interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
+		// interrupt-parent = <&gpio1>;
+		// interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
 		reg = <1>; //cs1
 		//resets = <&tpm_reset>;
 	};
@@ -191,63 +186,44 @@
 	power-supply = <&reg_spi_bus>;
 	status = "okay";
 
-	#address-cells = <1>;
-	#size-cells = <0>;	
-
 	spidev@0{
-		compatible = "spidev";
+		compatible = "dh,dhcom-board";
 		reg = <0>;      /* CE0 */
-		#address-cells = <1>;
-		#size-cells = <0>;
 		spi-max-frequency = <4000000>;
     };
 	spidev@1{
-		compatible = "spidev";
+		compatible = "dh,dhcom-board";
 		reg = <1>;      /* CE0 */
-		#address-cells = <1>;
-		#size-cells = <0>;
 		spi-max-frequency = <4000000>;
     };
 	spidev@2{
-		compatible = "spidev";
+		compatible = "dh,dhcom-board";
 		reg = <2>;      /* CE0 */
-		#address-cells = <1>;
-		#size-cells = <0>;
 		spi-max-frequency = <4000000>;
     };
 	spidev@3{
-		compatible = "spidev";
+		compatible = "dh,dhcom-board";
 		reg = <3>;      /* CE0 */
-		#address-cells = <1>;
-		#size-cells = <0>;
 		spi-max-frequency = <4000000>;
     };
 	spidev@4{
-		compatible = "spidev";
+		compatible = "dh,dhcom-board";
 		reg = <4>;      /* CE0 */
-		#address-cells = <1>;
-		#size-cells = <0>;
 		spi-max-frequency = <4000000>;
     };
 	spidev@5{
-		compatible = "spidev";
+		compatible = "dh,dhcom-board";
 		reg = <5>;      /* CE0 */
-		#address-cells = <1>;
-		#size-cells = <0>;
 		spi-max-frequency = <4000000>;
     };
 	spidev@6{
-		compatible = "spidev";
+		compatible = "dh,dhcom-board";
 		reg = <6>;      /* CE0 */
-		#address-cells = <1>;
-		#size-cells = <0>;
 		spi-max-frequency = <4000000>;
     };
 	spidev@7{
-		compatible = "spidev";
+		compatible = "dh,dhcom-board";
 		reg = <7>;      /* CE0 */
-		#address-cells = <1>;
-		#size-cells = <0>;
 		spi-max-frequency = <4000000>;
     };
 
@@ -345,6 +321,12 @@
 			   ""   , ""   , "I"  , ""   , ""   , ""   , ""   , ""   ,
 			/* 24     25     26     27     28     29     30     31 */
 			   ""   , ""   , ""   , ""   , ""   , ""   , ""   , ""   ;
+	tpm_reset {
+        gpio-hog;
+        gpios = <4 GPIO_ACTIVE_HIGH>;
+        output-high;
+        line-name = "tpm_reset";
+    };
 };
 
 &gpio2 {		/* 0      1      2      3      4      5      6      7  */
@@ -689,11 +671,11 @@
 		>;
 	};
 
-	tpm_reset: tpm_reset {
-		fsl,pins = <
-			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0 /* reset */
-		>;
-	};
+	// tpm_reset: tpm_reset {
+	// 	fsl,pins = <
+	// 		MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0 /* reset */
+	// 	>;
+	// };
 
 	pinctrl_enet1: enet1-grp {
 		fsl,pins = <
@@ -796,14 +778,14 @@
 		>;
 	};
 
-	pinctrl_tsc: tsc-grp {
-		fsl,pins = <
-			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
-			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
-			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
-			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0
-		>;
-	};
+	// pinctrl_tsc: tsc-grp {
+	// 	fsl,pins = <
+	// 		MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
+	// 		MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
+	// 		MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
+	// 		MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0
+	// 	>;
+	// };
 
 	pinctrl_uart3: uart3-grp{
 		fsl,pins = <
