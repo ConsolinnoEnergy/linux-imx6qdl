@@ -285,7 +285,7 @@ module_spi_driver(dm9051_driver);
 #endif
 #endif   
 
-void conf_spi_board(void)
+void __init conf_spi_board(void)
 {
 /* ------------------------------------------------------------------------------------------- */
 /* #if DM_DM_CONF_INSTEAD_OF_DTS_AND_BE_DRVMODULE                                              */
@@ -324,56 +324,56 @@ void unconf_spi_board(void)
   #endif
 }
 
-static int __init  
-dm9051_init(void)
-{
-    printk("\n");
-  //printk("[dm951_insmod].s -------- 00.s --------\n");
-    printk("[dm951_s_insmod].s ");
-    printk("  --");
-    printk("  --");
-    printk("  --");
-    printk("--00.e--");
-#if 0
-    conf_spi_print(-);
-    //;;NO 'db' here! / ;;NO 'spi' here!
-	//;unsigned chipid= dm9051_chipid(db); 
-	//;if (chipid==(DM9051_ID>>16))
-	//;	printk("Read [DM9051_PID] = %04x OK\n", chipid);
-#endif    
-    printk("  --");
-    printk("  --");
-    printk("  --\n");
-    printk("%s, DRV %s\n", CARDNAME_9051, MSTR_DTS_VERSION);
-    printk("%s, DRV %s\n", CARDNAME_9051, MSTR_MOD_VERSION);
-    printk("%s, DRV %s\n", CARDNAME_9051, MSTR_INT_VERSION);
-    printk("%s, SPI %s\n", CARDNAME_9051, RD_MODEL_VERSION);
-    printk("%s, SPI %s\n", CARDNAME_9051, WR_MODEL_VERSION);
+// static int __init  
+// dm9051_init(void)
+// {
+//     printk("\n");
+//   //printk("[dm951_insmod].s -------- 00.s --------\n");
+//     printk("[dm951_s_insmod].s ");
+//     printk("  --");
+//     printk("  --");
+//     printk("  --");
+//     printk("--00.e--");
+// #if 0
+//     conf_spi_print(-);
+//     //;;NO 'db' here! / ;;NO 'spi' here!
+// 	//;unsigned chipid= dm9051_chipid(db); 
+// 	//;if (chipid==(DM9051_ID>>16))
+// 	//;	printk("Read [DM9051_PID] = %04x OK\n", chipid);
+// #endif    
+//     printk("  --");
+//     printk("  --");
+//     printk("  --\n");
+//     printk("%s, DRV %s\n", CARDNAME_9051, MSTR_DTS_VERSION);
+//     printk("%s, DRV %s\n", CARDNAME_9051, MSTR_MOD_VERSION);
+//     printk("%s, DRV %s\n", CARDNAME_9051, MSTR_INT_VERSION);
+//     printk("%s, SPI %s\n", CARDNAME_9051, RD_MODEL_VERSION);
+//     printk("%s, SPI %s\n", CARDNAME_9051, WR_MODEL_VERSION);
     
-    printk("%s Driver loaded, V%s (%s)\n", CARDNAME_9051, 
-	DRV_VERSION, "LOOP_XMIT"); //str_drv_xmit_type="LOOP_XMIT"
+//     printk("%s Driver loaded, V%s (%s)\n", CARDNAME_9051, 
+// 	DRV_VERSION, "LOOP_XMIT"); //str_drv_xmit_type="LOOP_XMIT"
 	
-#ifdef MTK_CONF_YES
-    printk("%s, SPI %s\n", CARDNAME_9051, MSTR_MTKDMA_VERSION);
-#endif
-    printk("%s, SPI %s\n", CARDNAME_9051, MSTR_DMA_SYNC_VERSION);
+// #ifdef MTK_CONF_YES
+//     printk("%s, SPI %s\n", CARDNAME_9051, MSTR_MTKDMA_VERSION);
+// #endif
+//     printk("%s, SPI %s\n", CARDNAME_9051, MSTR_DMA_SYNC_VERSION);
 
-#if 0
-	dm9051_hw_reset();
-#endif
-	conf_spi_board();
-	printk("[dm951_s_insmod].e\n");
-	return spi_register_driver(&dm9051_driver);
-}
+// #if 0
+// 	dm9051_hw_reset();
+// #endif
+// 	conf_spi_board();
+// 	printk("[dm951_s_insmod].e\n");
+// 	return spi_register_driver(&dm9051_driver);
+// }
 
-static void dm9051_cleanup(void)
-{
-    printk("dm9051_exit.s\n");
-	unconf_spi_board();
-    printk("[dm951_e_rmmod].s ------- 00.s -------\n");
-	spi_unregister_driver(&dm9051_driver);
-    printk("[dm951_e_rmmod].e ------- 00.e -------\n");
-}
+// static void dm9051_cleanup(void)
+// {
+//     printk("dm9051_exit.s\n");
+// 	unconf_spi_board();
+//     printk("[dm951_e_rmmod].s ------- 00.s -------\n");
+// 	spi_unregister_driver(&dm9051_driver);
+//     printk("[dm951_e_rmmod].e ------- 00.e -------\n");
+// }
 
 // module_init(dm9051_init);
 // module_exit(dm9051_cleanup);
