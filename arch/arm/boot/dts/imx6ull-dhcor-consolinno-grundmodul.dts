@@ -152,18 +152,6 @@
 	// 	status = "okay";
 	// };
 
-	// dm9051: dm9051@0 {
-	// 	pinctrl-names = "default";
-	// 	pinctrl-0 = <&pinctrl_ecspi1_eth>;
-	// 	compatible = "davicom,dm9051";
-	// 	spi-max-frequency = <12000000>;
-	// 	// intr-gpio = <&gpio1 2 0>;
-	// 	interrupt-parent = <&gpio1>;
-	// 	interrupts = <2 IRQ_TYPE_EDGE_BOTH>;
-	// 	reg = <0>; //cs0
-	// 	status = "okay";
-	// };
-
 	slb9670: slb9670@0 {
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ecspi1_tpm>;
@@ -218,21 +206,13 @@
 		reg = <5>;      /* CE0 */
 		spi-max-frequency = <4000000>;
     };
-	// spidev@6{
-	// 	compatible = "dh,dhcom-board";
-	// 	reg = <6>;      /* CE0 */
-	// 	spi-max-frequency = <4000000>;
-    // };
-	// dm9051: ethernet@3 {
-	// 	pinctrl-names = "default";
-	// 	compatible = "davicom,dm9051";
-	// 	spi-max-frequency = <12000000>;
-	// 	// intr-gpio = <&gpio1 2 0>;
-	// 	// interrupt-parent = <&gpiointrel>;
-	// 	// interrupts = <5 IRQ_TYPE_EDGE_BOTH>;
-	// 	reg = <6>; //cs6
-	// 	status = "okay";
-	// };
+	
+	spidev@6{
+		compatible = "dh,dhcom-board";
+		reg = <6>;      /* CE0 */
+		spi-max-frequency = <4000000>;
+    };
+
 	spidev@7{
 		compatible = "dh,dhcom-board";
 		reg = <7>;      /* CE0 */
