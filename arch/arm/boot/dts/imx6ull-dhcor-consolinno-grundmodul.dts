@@ -132,6 +132,9 @@
 // 	status = "disabled";
 // };
 
+// add w5500 ethernet
+// https://github.com/raspberrypi/linux/blob/rpi-5.10.y/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+
 #ifndef CFG_BOOTFLASH
 &ecspi1 { /* DHCOM SPI1 */
 	cs-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>, <&gpio3 10 GPIO_ACTIVE_LOW>;
@@ -529,6 +532,14 @@
 // 	status = "okay";
 // };
 
+&usdhc1 { //Disable wifi
+	status = "disabled";
+}
+
+&uart2 { // disable bluetooth
+	status = "disabled";
+};
+
 &uart3 { /* Consolinno CLS RS485 pin header */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
@@ -659,7 +670,8 @@
 
 	pinctrl_ecspi1_eth: ecspi1-eth-grp {
 		fsl,pins = <
-			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0x400120b0 /* SMSC phy INT */
+			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0x1b0b0 /* SMSC phy INT */
+			MX6UL_PAD_GPIO1_IO08__GPIO1_IO08	0x1b0b0 /* iqr from pwm/adc input for testing purpose*/
 		>;
 
 	};
@@ -762,11 +774,11 @@
 	// 	>;
 	// };
 
-	pinctrl_pwm1: pwm1-grp {
-		fsl,pins = <
-			MX6UL_PAD_GPIO1_IO08__PWM1_OUT		0x110b0
-		>;
-	};
+	// pinctrl_pwm1: pwm1-grp {
+	// 	fsl,pins = <
+	// 		MX6UL_PAD_GPIO1_IO08__PWM1_OUT		0x110b0
+	// 	>;
+	// };
 
 	pinctrl_sai2: sai2-grp {
 		fsl,pins = <
@@ -869,7 +881,7 @@
 			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x120b0    /* GPIO E, Potential Free Input IN 4 */
 			MX6ULL_PAD_SNVS_TAMPER7__GPIO5_IO07	0x400120b0 /* GPIO F */
 			MX6ULL_PAD_SNVS_TAMPER8__GPIO5_IO08	0x120b0    /* GPIO G -> Backlight enable */
-			MX6ULL_PAD_SNVS_TAMPER9__GPIO5_IO09	0x1b0b0    /* GPIO H -> WL_REG_ON (WiFi on LGA) */
+			/*MX6ULL_PAD_SNVS_TAMPER9__GPIO5_IO09	0x1b0b0*/    /* GPIO H -> WL_REG_ON (WiFi on LGA) */
 		>;
 	};
 
