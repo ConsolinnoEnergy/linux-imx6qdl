@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: (GPL-2.0-or-later)
 /*
  * Copyright (C) 2018 DH electronics GmbH
+ * Copyright (C) 2021 Consolinno Energy GmbH
  */
 
 /dts-v1/;
@@ -12,8 +13,8 @@
 #include <dt-bindings/pwm/pwm.h>
 
 / {
-	model = "DHCOR i.MX6ULL on example board";
-	compatible = "dh,imx6ull-dhcor-example", "fsl,imx6ull";
+	model = "DHCOR i.MX6ULL on Consolinno Energy Grundmodul board";
+	compatible = "dh,imx6ull-dhcor-consolinno", "fsl,imx6ull";
 
 	aliases {
 		rtc0 = &rtc_i2c;
@@ -24,35 +25,6 @@
 		/delete-property/ spi2; /* Avoid double definitions */
 		/delete-property/ spi3;
 	};
-
-	// clk_ext_audio_codec: clock-codec {
-	// 	compatible = "fixed-clock";
-	// 	#clock-cells = <0>;
-	// 	clock-frequency = <24000000>;
-	// };
-
-	// display_bl: display-bl {
-	// 	compatible = "pwm-backlight";
-	// 	pwms = <&pwm1 0 50000 PWM_POLARITY_INVERTED>;
-	// 	/* Brightness value  0 1  2  3  4  5  6  7   8   9   10 */
-	// 	brightness-levels = <0 16 22 30 40 55 75 102 138 188 255>;
-	// 	default-brightness-level = <8>;
-	// 	enable-gpios = <&gpio5 8 GPIO_ACTIVE_HIGH>; /* GPIO G */
-	// 	power-supply = <&reg_ext_24v>;
-	// 	status = "okay";
-	// };
-
-	// panel {
-	// 	compatible = "edt,etm0700g0edh6"; /* Default PDK2 display */
-	// 	ddc-i2c-bus = <&i2c2>;            /* Using EDID if provided */
-	// 	backlight = <&display_bl>;
-
-	// 	port {
-	// 		panel_in: endpoint {
-	// 			remote-endpoint = <&display_out>;
-	// 		};
-	// 	};
-	// };
 
 	reg_ext_24v: regulator-ext-24v {
 		compatible = "regulator-fixed";
@@ -93,31 +65,6 @@
 		gpio = <&gpio1 5 GPIO_ACTIVE_LOW>;
 	};
 
-	// sound {
-	// 	compatible = "simple-audio-card";
-	// 	simple-audio-card,name = "pdk2-sgtl5000";
-	// 	simple-audio-card,format = "i2s";
-	// 	simple-audio-card,bitclock-master = <&dailink_master>;
-	// 	simple-audio-card,frame-master = <&dailink_master>;
-	// 	simple-audio-card,widgets =
-	// 		"Microphone", "Mic Jack",
-	// 		"Line", "Line In Jack",
-	// 		"Headphone", "Headphone Jack";
-	// 	simple-audio-card,routing =
-	// 		"MIC_IN", "Mic Jack",
-	// 		"Mic Jack", "Mic Bias",
-	// 		"LINE_IN", "Line In Jack",
-	// 		"Headphone Jack", "HP_OUT";
-
-	// 	simple-audio-card,cpu {
-	// 		sound-dai = <&sai2>;
-	// 	};
-
-	// 	dailink_master: simple-audio-card,codec {
-	// 		sound-dai = <&sgtl5000>;
-	// 		clocks = <&clk_ext_audio_codec>;
-	// 	};
-	// };
 };
 
 &can1 {
@@ -125,15 +72,6 @@
 	pinctrl-0 = <&pinctrl_flexcan1>;
 	status = "okay";
 };
-
-// &can2 {
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&pinctrl_flexcan2>;
-// 	status = "disabled";
-// };
-
-// add w5500 ethernet
-// https://github.com/raspberrypi/linux/blob/rpi-5.10.y/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
 
 #ifndef CFG_BOOTFLASH
 &ecspi1 { /* DHCOM SPI1 */
@@ -145,19 +83,19 @@
 
 	// enc28j60: ethernet@0 {
 	// 	pinctrl-names = "default";
-	// 	// pinctrl-0 = <&pinctrl_ecspi1_eth>;
+	// 	pinctrl-0 = <&pinctrl_ecspi1_eth>;
 	// 	compatible = "microchip,enc28j60";
-	// 	spi-max-frequency = <1000000>;
+	// 	spi-max-frequency = <4000000>;
 	// 	// intr-gpio = <&gpio1 2 0>;
 	// 	interrupt-parent = <&gpio1>;
-	// 	interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
+	// 	interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
 	// 	reg = <0>; //cs0
 	// 	status = "okay";
 	// };
 
 	slb9670: slb9670@0 {
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_ecspi1_tpm>;
+		//pinctrl-0 = <&pinctrl_ecspi1_tpm>;
 		compatible = "infineon,slb9670";
 		spi-max-frequency = <3200000>;
 		// TODO: Debug reason for not working interrupt mode
@@ -181,69 +119,49 @@
 	spidev@0{
 		compatible = "dh,dhcom-board";
 		reg = <0>;      /* CE0 */
-		spi-max-frequency = <4000000>;
+		spi-max-frequency = <10000000>;
     };
 	spidev@1{
 		compatible = "dh,dhcom-board";
-		reg = <1>;      /* CE0 */
-		spi-max-frequency = <4000000>;
+		reg = <1>;      /* CE1 */
+		spi-max-frequency = <10000000>;
     };
 
 	spidev@2{
 		compatible = "dh,dhcom-board";
-		reg = <2>;      /* CE0 */
-		spi-max-frequency = <4000000>;
+		reg = <2>;      /* CE2 */
+		spi-max-frequency = <10000000>;
     };
 	spidev@3{
 		compatible = "dh,dhcom-board";
-		reg = <3>;      /* CE0 */
-		spi-max-frequency = <4000000>;
+		reg = <3>;      /* CE3 */
+		spi-max-frequency = <10000000>;
     };
-	spidev@4{
-		compatible = "dh,dhcom-board";
-		reg = <4>;      /* CE0 */
-		spi-max-frequency = <4000000>;
-    };
-	spidev@5{
-		compatible = "dh,dhcom-board";
-		reg = <5>;      /* CE0 */
-		spi-max-frequency = <4000000>;
-    };
+
+	// Spi cs lines from gpio expander, should be improved to prevent errors
+	// spidev@4{
+	// 	compatible = "dh,dhcom-board";
+	// 	reg = <4>;      /* CE4 */
+	// 	spi-max-frequency = <4000000>;
+    // };
+	// spidev@5{
+	// 	compatible = "dh,dhcom-board";
+	// 	reg = <5>;      /* CE5 */
+	// 	spi-max-frequency = <4000000>;
+    // };
 	
-	spidev@6{
-		compatible = "dh,dhcom-board";
-		reg = <6>;      /* CE0 */
-		spi-max-frequency = <4000000>;
-    };
+	// spidev@6{
+	// 	compatible = "dh,dhcom-board";
+	// 	reg = <6>;      /* CE6 */
+	// 	spi-max-frequency = <4000000>;
+    // };
 
-	spidev@7{
-		compatible = "dh,dhcom-board";
-		reg = <7>;      /* CE0 */
-		spi-max-frequency = <4000000>;
-    };
-
-	// Loaded manualy from leaflet basic sw
-
-	// tmp0: mcp3208-tmp0@0 {
-	// 	compatible = "microchip,mcp3208";
-	// 	reg = <0>;
-	// 	spi-max-frequency = <1000000>;
-	// };
-	// tmp1: mcp3208-tmp1@1 {
-	// 	compatible = "microchip,mcp3208";
-	// 	reg = <1>;
-	// 	spi-max-frequency = <1000000>;
-	// };
-	// tmp2: mcp3208-tmp2@2 {
-	// 	compatible = "microchip,mcp3208";
-	// 	reg = <2>;
-	// 	spi-max-frequency = <1000000>;
-	// };
-	// tmp3: mcp3208-tmp3@3 {
-	// 	compatible = "microchip,mcp3208";
-	// 	reg = <3>;
-	// 	spi-max-frequency = <1000000>;
-	// };
+	// spidev@7{
+	// 	compatible = "dh,dhcom-board";
+	// 	reg = <7>;      /* CE7 */
+	// 	spi-max-frequency = <4000000>;
+    // };
+	
 };
 
 &fec1 {
@@ -323,11 +241,26 @@
         output-high;
         line-name = "tpm_reset";
     };
-	enc28j60_reset {
+
+	tpm_interrupt {
+        gpio-hog;
+        gpios = <1 GPIO_ACTIVE_LOW>;
+        input;
+        line-name = "tpm_reset";
+    };
+
+	eth3_reset {
         gpio-hog;
         gpios = <23 GPIO_ACTIVE_HIGH>;
         output-high;
-        line-name = "enc28j60_reset";
+        line-name = "eth3_reset";
+    };
+
+	eth3_interrupt {
+        gpio-hog;
+        gpios = <2 GPIO_ACTIVE_LOW>;
+        input;
+        line-name = "eth3_interrupt";
     };
 };
 
@@ -389,18 +322,6 @@
 		pagesize = <16>;
 	};
 
-	// adc@51 { /* TI ADC101C027 */
-	// 	compatible = "ti,adc101c";
-	// 	reg = <0x51>;
-	// 	vref-supply = <&reg_ext_3v3_ref>;
-	// };
-
-	// adc@52 { /* TI ADC101C027 */
-	// 	compatible = "ti,adc101c";
-	// 	reg = <0x52>;
-	// 	vref-supply = <&reg_ext_3v3_ref>;
-	// };
-
 	mac-eeprom@53 { /* Microchip 24AA025E48T-I/OT containing MAC for enet2 */
 		compatible = "atmel,24c02";
 		reg = <0x53>;
@@ -419,8 +340,6 @@
 		pagesize = <32>;
 	};
 
-
-
 	// GPIO Expander for internal relais
 	gpiointrel: gpio-intrel@21 {
 		compatible = "nxp,pca9555";
@@ -428,32 +347,6 @@
 		#gpio-cells = <2>;
 		reg = <0x21>;
 	};
-
-	// relais boards, 0x20, 0x22, 0x24, 0x26
-	// gpiorelmod1: gpio-relmod1@20 {
-	// 	compatible = "microchip,mcp23008";
-	// 	gpio-controller;
-	// 	#gpio-cells = <2>;
-	// 	reg = <0x20>;
-	// };
-	// gpiorelmod2: gpio-relmod2@22 {
-	// 	compatible = "microchip,mcp23008";
-	// 	gpio-controller;
-	// 	#gpio-cells = <2>;
-	// 	reg = <0x22>;
-	// };
-	// gpiorelmod3: gpio-relmod3@24 {
-	// 	compatible = "microchip,mcp23008";
-	// 	gpio-controller;
-	// 	#gpio-cells = <2>;
-	// 	reg = <0x24>;
-	// };
-	// gpiorelmod4: gpio-relmod4@26 {
-	// 	compatible = "microchip,mcp23008";
-	// 	gpio-controller;
-	// 	#gpio-cells = <2>;
-	// 	reg = <0x26>;
-	// };
 
 	pwm0: pca-mod0@43 {
 		compatible = "nxp,pca9685-pwm";
@@ -464,77 +357,13 @@
 		open-drain;
 	};
 
-	// temp module
 
-
-	/* pmic@58 used on DHCOR */
 };
 
-// &i2c2 { /* DHCOM I2C1 */
-// 	pinctrl-names = "default", "gpio";
-// 	pinctrl-0 = <&pinctrl_i2c2>;
-// 	pinctrl-1 = <&pinctrl_i2c2_gpio>;
-// 	scl-gpios = <&gpio1 30 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-// 	sda-gpios = <&gpio1 31 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-// 	clock_frequency = <100000>;
-// 	status = "okay";
-
-// 	sgtl5000: codec@a {
-// 		compatible = "fsl,sgtl5000";
-// 		reg = <0x0a>;
-// 		#sound-dai-cells = <0>;
-// 		clocks = <&clk_ext_audio_codec>;
-// 		VDDA-supply = <&reg_ext_3v3>;
-// 		VDDIO-supply = <&reg_ext_3v3>;
-// 	};
-
-// 	polytouch@38 { /* Default PDK2 display touch: edt-ft5x06 */
-// 		compatible = "edt,edt-ft5x06";
-// 		reg = <0x38>;
-// 		interrupt-parent = <&gpio5>;
-// 		interrupts = <4 IRQ_TYPE_EDGE_FALLING>; /* GPIO E */
-// 		linux,wakeup;
-// 	};
-// };
-
-// &lcdif {
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&pinctrl_lcdif>;
-// 	status = "okay";
-
-// 	port {
-// 		display_out: endpoint {
-// 			remote-endpoint = <&panel_in>;
-// 		};
-// 	};
-// };
-
-// &pwm1 {
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&pinctrl_pwm1>;
-// 	#pwm-cells = <3>;
-// 	status = "okay";
-// };
-
-// &sai2 {
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&pinctrl_sai2>;
-// 	status = "okay";
-// };
-
-// &tsc {
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&pinctrl_tsc>;
-// 	xnur-gpio = <&gpio1 3 GPIO_ACTIVE_LOW>;
-// 	measure-delay-time = <0xffff>;
-// 	pre-charge-time = <0xfff>;
-// 	touchscreen-average-samples = <32>;
-// 	status = "okay";
-// };
 
 &usdhc1 { //Disable wifi
 	status = "disabled";
-}
+};
 
 &uart2 { // disable bluetooth
 	status = "disabled";
@@ -621,28 +450,17 @@
 	pinctrl_hog_pdk2: hog-pdk2-grp {
 		fsl,pins = <
 			MX6UL_PAD_UART1_CTS_B__GPIO1_IO18	0x400120b0 /* GPIO I -> BT_REG_ON (BT on LGA) */
-			/*MX6UL_PAD_CSI_HSYNC__GPIO4_IO20		0x400120b0*/ /* GPIO J, uart 6 use! */
-			/*MX6UL_PAD_CSI_PIXCLK__GPIO4_IO18	0x400120b0*/ /* GPIO K, disable while used for uart6 */
-			/*MX6UL_PAD_CSI_MCLK__GPIO4_IO17		0x400120b0*/ /* GPIO L, disable while used for uart6 */
-			/*MX6UL_PAD_CSI_VSYNC__GPIO4_IO19		0x400120b0*/ /* GPIO M, disable while used for uart6 */
+
 #ifndef CFG_BOOTFLASH
 			MX6UL_PAD_CSI_DATA07__GPIO4_IO28	0x400120b0 /* GPIO N */
 			MX6UL_PAD_CSI_DATA06__GPIO4_IO27	0x400120b0 /* GPIO O */
 			MX6UL_PAD_CSI_DATA05__GPIO4_IO26	0x400120b0 /* GPIO P */
 			MX6UL_PAD_CSI_DATA04__GPIO4_IO25	0x400120b0 /* GPIO Q */
 #endif
-			/*MX6UL_PAD_CSI_DATA03__GPIO4_IO24	0x400120b0*/ /* GPIO R (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
-			/*MX6UL_PAD_CSI_DATA02__GPIO4_IO23	0x400120b0*/ /* GPIO S (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
-			/*MX6UL_PAD_CSI_DATA01__GPIO4_IO22	0x400120b0*/ /* GPIO T (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
-			/*MX6UL_PAD_CSI_DATA00__GPIO4_IO21	0x400120b0*/ /* GPIO U (muxed as GPIO, but unconnected on DHCOM with CFG_BOOTFLASH) */
-			/* There isn't a pin defined                          GPIO V */
-			/* There isn't a pin defined                          GPIO W */
-			MX6UL_PAD_JTAG_TMS__GPIO1_IO11		0x400120b0 /* INT_HIGHEST_PRIORITY */
 
+			MX6UL_PAD_JTAG_TMS__GPIO1_IO11		0x400120b0 /* INT_HIGHEST_PRIORITY */
 			MX6UL_PAD_UART2_RTS_B__GPIO1_IO23 	0x400120b0 /* reset enc28j60*/
 			MX6UL_PAD_UART2_CTS_B__GPIO1_IO22	0x400120b0 /* status led3 */
-
-
 		>;
 	};
 
@@ -671,7 +489,7 @@
 	pinctrl_ecspi1_eth: ecspi1-eth-grp {
 		fsl,pins = <
 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0x1b0b0 /* SMSC phy INT */
-			MX6UL_PAD_GPIO1_IO08__GPIO1_IO08	0x1b0b0 /* iqr from pwm/adc input for testing purpose*/
+			MX6UL_PAD_GPIO1_IO08__GPIO1_IO08	0x1b0b0 /* irq from pwm/adc input for testing purpose*/
 		>;
 
 	};
@@ -681,12 +499,6 @@
 			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0x1b0b0 /* irq */
 		>;
 	};
-
-	// tpm_reset: tpm_reset {
-	// 	fsl,pins = <
-	// 		MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0 /* reset */
-	// 	>;
-	// };
 
 	pinctrl_enet1: enet1-grp {
 		fsl,pins = <
@@ -726,60 +538,6 @@
 		>;
 	};
 
-	// pinctrl_flexcan2: flexcan2-grp{
-	// 	fsl,pins = <
-	// 		/*MX6UL_PAD_UART2_RTS_B__FLEXCAN2_RX	0x1b020*/
-	// 		/*MX6UL_PAD_UART2_CTS_B__FLEXCAN2_TX	0x1b020*/
-	// 	>;
-	// };
-
-	// pinctrl_i2c2: i2c2-grp {
-	// 	fsl,pins = <
-	// 		MX6UL_PAD_UART5_TX_DATA__I2C2_SCL	0x4001b8b0
-	// 		MX6UL_PAD_UART5_RX_DATA__I2C2_SDA	0x4001b8b0
-	// 	>;
-	// };
-
-	// pinctrl_i2c2_gpio: i2c2-gpio-grp {
-	// 	fsl,pins = <
-	// 		MX6UL_PAD_UART5_TX_DATA__GPIO1_IO30	0x4001b8b0
-	// 		MX6UL_PAD_UART5_RX_DATA__GPIO1_IO31	0x4001b8b0
-	// 	>;
-	// };
-
-	// pinctrl_lcdif: lcdif-grp {
-	// 	fsl,pins = <
-	// 		MX6UL_PAD_LCD_CLK__LCDIF_CLK		0x79
-	// 		MX6UL_PAD_LCD_ENABLE__LCDIF_ENABLE	0x79
-	// 		/*MX6UL_PAD_LCD_HSYNC__LCDIF_HSYNC	0x79*/
-	// 		/*MX6UL_PAD_LCD_VSYNC__LCDIF_VSYNC	0x79*/
-	// 		MX6UL_PAD_LCD_DATA00__LCDIF_DATA00	0x79
-	// 		MX6UL_PAD_LCD_DATA01__LCDIF_DATA01	0x79
-	// 		MX6UL_PAD_LCD_DATA02__LCDIF_DATA02	0x79
-	// 		MX6UL_PAD_LCD_DATA03__LCDIF_DATA03	0x79
-	// 		MX6UL_PAD_LCD_DATA04__LCDIF_DATA04	0x79
-	// 		/*MX6UL_PAD_LCD_DATA05__LCDIF_DATA05	0x79*/
-	// 		MX6UL_PAD_LCD_DATA06__LCDIF_DATA06	0x79
-	// 		MX6UL_PAD_LCD_DATA07__LCDIF_DATA07	0x79
-	// 		MX6UL_PAD_LCD_DATA08__LCDIF_DATA08	0x79
-	// 		MX6UL_PAD_LCD_DATA09__LCDIF_DATA09	0x79
-	// 		MX6UL_PAD_LCD_DATA10__LCDIF_DATA10	0x79
-	// 		MX6UL_PAD_LCD_DATA11__LCDIF_DATA11	0x79
-	// 		MX6UL_PAD_LCD_DATA12__LCDIF_DATA12	0x79
-	// 		MX6UL_PAD_LCD_DATA13__LCDIF_DATA13	0x79
-	// 		MX6UL_PAD_LCD_DATA14__LCDIF_DATA14	0x79
-	// 		MX6UL_PAD_LCD_DATA15__LCDIF_DATA15	0x79
-	// 		MX6UL_PAD_LCD_DATA16__LCDIF_DATA16	0x79
-	// 		MX6UL_PAD_LCD_DATA17__LCDIF_DATA17	0x79
-	// 	>;
-	// };
-
-	// pinctrl_pwm1: pwm1-grp {
-	// 	fsl,pins = <
-	// 		MX6UL_PAD_GPIO1_IO08__PWM1_OUT		0x110b0
-	// 	>;
-	// };
-
 	pinctrl_sai2: sai2-grp {
 		fsl,pins = <
 			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x130b0
@@ -788,15 +546,6 @@
 			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x120b0
 		>;
 	};
-
-	// pinctrl_tsc: tsc-grp {
-	// 	fsl,pins = <
-	// 		MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
-	// 		MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
-	// 		MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
-	// 		MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0
-	// 	>;
-	// };
 
 	pinctrl_uart3: uart3-grp{
 		fsl,pins = <
