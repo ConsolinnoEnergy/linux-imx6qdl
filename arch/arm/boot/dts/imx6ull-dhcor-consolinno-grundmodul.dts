@@ -65,6 +65,13 @@
 		gpio = <&gpio1 5 GPIO_ACTIVE_LOW>;
 	};
 
+	/* fixed crystal dedicated to mcp2515 */
+	// clk20m: clk20m {
+	// 	compatible = "fixed-clock";
+	// 	#clock-cells = <0>;
+	// 	clock-frequency = <20000000>;
+	// };
+
 };
 
 &can1 {
@@ -116,11 +123,23 @@
 	power-supply = <&reg_spi_bus>;
 	status = "okay";
 
+	// can3: can@3 {
+	// 	compatible = "microchip,mcp2515";
+	// 	pinctl-names = "default";
+	// 	pinctrl-0 = <&pinctrl_ecspi2_devirq>;
+	// 	reg = <2>;
+	// 	clocks = <&clk20m>;
+	// 	interrupt-parent = <&gpio1>;
+	// 	interrupts = <8 0x2>;
+	// 	spi-max-frequency = <10000000>;
+    // };
+
 	spidev@0{
 		compatible = "dh,dhcom-board";
 		reg = <0>;      /* CE0 */
 		spi-max-frequency = <10000000>;
     };
+
 	spidev@1{
 		compatible = "dh,dhcom-board";
 		reg = <1>;      /* CE1 */
@@ -132,6 +151,7 @@
 		reg = <2>;      /* CE2 */
 		spi-max-frequency = <10000000>;
     };
+
 	spidev@3{
 		compatible = "dh,dhcom-board";
 		reg = <3>;      /* CE3 */
@@ -261,6 +281,13 @@
         gpios = <2 GPIO_ACTIVE_LOW>;
         input;
         line-name = "eth3_interrupt";
+    };
+
+	can3_interrupt {
+        gpio-hog;
+        gpios = <8 GPIO_ACTIVE_LOW>;
+        input;
+        line-name = "can3_interrupt";
     };
 };
 
@@ -489,14 +516,20 @@
 	pinctrl_ecspi1_eth: ecspi1-eth-grp {
 		fsl,pins = <
 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0x1b0b0 /* SMSC phy INT */
-			MX6UL_PAD_GPIO1_IO08__GPIO1_IO08	0x1b0b0 /* irq from pwm/adc input for testing purpose*/
 		>;
 
 	};
 
+
 	pinctrl_ecspi1_tpm: ecspi1-tpm-grp {
 		fsl,pins = <
 			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0x1b0b0 /* irq */
+		>;
+	};
+
+	pinctrl_ecspi2_devirq: ecspi2-devirq-grp {
+		fsl,pins = <
+			MX6UL_PAD_GPIO1_IO08__GPIO1_IO08	0x1b0b0 /* irq from pwm/adc input for testing purpose*/
 		>;
 	};
 
