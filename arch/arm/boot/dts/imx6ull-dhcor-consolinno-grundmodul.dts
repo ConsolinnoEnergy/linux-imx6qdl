@@ -389,11 +389,13 @@
 
 
 &usdhc1 { //Disable wifi
-	status = "disabled";
+	//status = "disabled";
+	status = "okay";
 };
 
 &uart2 { // disable bluetooth
-	status = "disabled";
+	//status = "disabled";
+	status = "okay";
 };
 
 &uart3 { /* Consolinno CLS RS485 pin header */
